@@ -3,10 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 class GridLinesPainter extends CustomPainter {
+  final double ratio;
+
   late final paintData = Paint()
-    ..color = Colors.white70
+    ..color = Colors.white
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.square;
+
+  GridLinesPainter({super.repaint, required this.ratio});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -19,8 +23,9 @@ class GridLinesPainter extends CustomPainter {
     final dividedSpacing = size.width / count;
     for (var i = 0; i <= count; i++) {
       final elementSpacing = dividedSpacing * i;
-      final start = Offset(elementSpacing, 0);
-      final end = Offset(elementSpacing, size.height);
+      final xPosition = (dividedSpacing * ratio) + elementSpacing;
+      final start = Offset(xPosition, 0);
+      final end = Offset(xPosition, size.height);
       canvas.drawLine(start, end, paintData);
     }
   }
@@ -30,8 +35,9 @@ class GridLinesPainter extends CustomPainter {
     final dividedSpacing = size.width / count;
     for (var i = 0; i <= count; i++) {
       final elementSpacing = dividedSpacing * i;
-      final start = Offset(0, elementSpacing);
-      final end = Offset(size.width, elementSpacing);
+      final yPosition = (dividedSpacing * ratio) + elementSpacing;
+      final start = Offset(0, yPosition);
+      final end = Offset(size.width, yPosition);
       canvas.drawLine(start, end, paintData);
     }
   }
