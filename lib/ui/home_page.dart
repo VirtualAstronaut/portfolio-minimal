@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_portfolio/state/state.dart';
 import 'package:minimal_portfolio/ui/painter/grid_lines_painter.dart';
 import 'package:minimal_portfolio/ui/widgets/widgets.dart';
 
@@ -13,11 +14,12 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController;
   late final Animation<double> animation;
-
+  static const items = ['Projects', 'Work', 'About'];
+  String? selectedItem;
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2000));
     animation = Tween<double>(begin: 1, end: 0).animate(animationController);
     animationController.repeat();
     super.initState();
@@ -32,17 +34,32 @@ class _HomePageState extends State<HomePage>
           AnimatedGridLines(
             animation: animation,
           ),
-          const PartialBlackBox(
+          PartialBlackBox(
             child: Row(
               children: [
-                Expanded(child: OptionBar()),
-                Expanded(child: NameInfoWidget())
+                Expanded(
+                  child: OptionSelectionStateModel(
+                    onChange: onChange,
+                    selected: selectedItem,
+                    child: const OptionBar(),
+                  ),
+                ),
+                const Expanded(child: NameInfoWidget())
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  void onChange(String newValue) {
+    if (newValue == selectedItem) {
+      selectedItem = null;
+    } else {
+      selectedItem = newValue;
+    }
+    setState(() {});
   }
 
   @override

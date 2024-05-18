@@ -6,9 +6,11 @@ class InvertingTextButton extends StatefulWidget {
     super.key,
     required this.label,
     required this.onTap,
+    required this.selected,
   });
   final String label;
   final VoidCallback onTap;
+  final bool selected;
   @override
   State<InvertingTextButton> createState() => _InvertingTextButtonState();
 }
@@ -51,6 +53,7 @@ class _InvertingTextButtonState extends State<InvertingTextButton>
           return _IconLabel(
             label: widget.label,
             ratio: animation.value,
+            selected: widget.selected,
             onTap: onTap,
           );
         },
@@ -71,10 +74,15 @@ class _InvertingTextButtonState extends State<InvertingTextButton>
 
 class _IconLabel extends StatelessWidget {
   const _IconLabel(
-      {super.key, required this.label, this.ratio = 1, required this.onTap});
+      {super.key,
+      required this.label,
+      this.ratio = 1,
+      required this.onTap,
+      required this.selected});
   final String label;
   final double ratio;
   final VoidCallback onTap;
+  final bool selected;
   @override
   Widget build(BuildContext context) {
     final colorValues = (ratio * 255).toInt();
@@ -84,10 +92,10 @@ class _IconLabel extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.transparent,
+              selected ? Colors.white : Colors.transparent,
               ratio == 1.0 ? Colors.transparent : Colors.white,
             ],
-            stops: [ratio, ratio],
+            stops: selected ? [1, 1] : [ratio, ratio],
           ),
         ),
         child: Text(
@@ -95,9 +103,9 @@ class _IconLabel extends StatelessWidget {
           style: TextStyles.displaySmall.copyWith(
             color: Color.fromARGB(
               255,
-              colorValues,
-              colorValues,
-              colorValues,
+              selected ? Colors.black.value : colorValues,
+              selected ? Colors.black.value : colorValues,
+              selected ? Colors.black.value : colorValues,
             ),
           ),
         ),

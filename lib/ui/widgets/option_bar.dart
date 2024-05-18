@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_portfolio/state/state.dart';
 import 'package:minimal_portfolio/ui/theme/theme.dart';
 import 'package:minimal_portfolio/ui/widgets/spaced_column.dart';
 import 'package:minimal_portfolio/ui/widgets/widgets.dart';
@@ -20,18 +21,14 @@ class OptionBar extends StatelessWidget {
   }
 }
 
-class _OptionItem extends StatefulWidget {
+class _OptionItem extends StatelessWidget {
   const _OptionItem(this.label, {super.key, required});
   final String label;
 
   @override
-  State<_OptionItem> createState() => _OptionItemState();
-}
-
-class _OptionItemState extends State<_OptionItem>
-    with SingleTickerProviderStateMixin {
-  @override
   Widget build(BuildContext context) {
+    final selected = OptionSelectionStateModel.selectedOf(context);
+    print(selected);
     return Row(
       children: [
         const Icon(
@@ -42,8 +39,18 @@ class _OptionItemState extends State<_OptionItem>
         const SizedBox(
           width: 20,
         ),
-        InvertingTextButton(label: widget.label, onTap: () {})
+        InvertingTextButton(
+          label: label,
+          selected: label == selected,
+          onTap: () => onLabelTap(context),
+        )
       ],
     );
+  }
+
+  void onLabelTap(BuildContext context) {
+    OptionSelectionStateModel.of(context).onChange.call(
+          label,
+        );
   }
 }
