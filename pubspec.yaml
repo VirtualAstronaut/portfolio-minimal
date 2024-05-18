@@ -20,6 +20,5 @@ flutter:
     - family: ChakraPetch
       fonts:
         - asset: assets/fonts/ChakraPetch-Regular.ttf
-        - asset: assets/fonts/TitilliumWeb-Italic.ttf
           style: italic
   uses-material-design: true
